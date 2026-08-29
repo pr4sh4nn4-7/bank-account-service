@@ -1,0 +1,14 @@
+# https://kubernetes.io/docs/concepts/services-networking/service/
+apiVersion: v1
+kind: Service
+metadata:
+  name: account-svc
+spec:
+  selector:
+    app: account-deploy
+  type: LoadBalancer
+  ports:
+    - protocol: "TCP"
+      port: 8081
+      targetPort: 8081
+---

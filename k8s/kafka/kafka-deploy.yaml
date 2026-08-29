@@ -1,0 +1,30 @@
+# https://kubernetes.io/docs/concepts/workloads/controllers/deployment/
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kafka-deployment
+  labels:
+    app: kafka-de
+spec:
+  selector:
+    matchLabels:
+      app: kafka-de
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: kafka-de
+    spec:
+      # initContainers:
+      # Init containers are exactly like regular containers, except:
+      # - Init containers always run to completion.
+      # - Each init container must complete successfully before the next one starts.
+      containers:
+        - name: my-kafka
+          image: apache/kafka:4.2.1
+          envFrom:
+            - configMapRef:
+                name: kafka-config
+          ports:
+            - containerPort: 9092
+---

@@ -1,0 +1,14 @@
+# https://kubernetes.io/docs/concepts/services-networking/service/
+apiVersion: v1
+kind: Service
+metadata:
+  name: redis-svc
+spec:
+  selector:
+    app: redis-deploy
+  type: LoadBalancer
+  ports:
+    - protocol:
+      port: 6379
+      targetPort: 6379
+---

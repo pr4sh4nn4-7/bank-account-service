@@ -1,0 +1,87 @@
+# https://kubernetes.io/docs/concepts/workloads/controllers/deployment/
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: account-service-deploy
+  labels:
+    app: account-deploy
+spec:
+  selector:
+    matchLabels:
+      app: account-deploy
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: account-deploy
+    spec:
+      # initContainers:
+      # Init containers are exactly like regular containers, except:
+      # - Init containers always run to completion.
+      # - Each init container must complete successfully before the next one starts.
+      containers:
+        - name: account-service
+          image: v4gish7/account-service
+          env:
+            - name: MYSQL_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: myenv
+                  key: DB_HOST
+
+            - name: MYSQL_PORT
+              valueFrom:
+                secretKeyRef:
+                  name: myenv
+                  key: DB_PORT
+
+            - name: MYSQL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: myenv
+                  key: MYSQL_PASSWORD
+
+            - name: MYSQL_USER
+              valueFrom:
+                secretKeyRef:
+                  name: myenv
+                  key: MYSQL_USER
+
+            - name: MYSQL_DB
+              valueFrom:
+                secretKeyRef:
+                  name: myenv
+                  key: MYSQL_DB
+
+            # - name: REDIS_PORT
+            #   valueFrom:
+            #     secretKeyRef:
+            #       name: myenv
+            #       key: REDIS_PORT
+
+            - name: KAFKA_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: myenv
+                  key: KAFKA_HOST
+
+            - name: KAFKA_PORT
+              valueFrom:
+                secretKeyRef:
+                  name: myenv
+                  key: KAFKA_PORT
+            #
+            # - name: ACCOUNT_SERVICE_PORT
+            #   valueFrom:
+            #     secretKeyRef:
+            #       name: myenv
+            #       key: ACCOUNT_SERVICE_PORT
+            #
+            # - name: ACCOUNT_SERVICE_HOST
+            #   valueFrom:
+            #     secretKeyRef:
+            #       name: myenv
+            #       key: ACCOUNT_SERVICE_HOST
+          ports:
+            - containerPort: 8081
+              name: account-service
