@@ -12,6 +12,7 @@ target/
 .settings
 .springBeans
 .sts4-cache
+k8s/env-*
 
 ### IntelliJ IDEA ###
 .idea
